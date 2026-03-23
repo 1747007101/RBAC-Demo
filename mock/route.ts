@@ -56,7 +56,7 @@ export default [
   {
     url: "/api/routes",
     method: "get",
-    response: (req) => {
+    response: () => {
       return {
         code: 200,
         data: [
@@ -79,6 +79,16 @@ export default [
             meta: { title: "权限演示" },
           },
         ],
+      };
+    },
+  },
+  {
+    url: "/api/logout",
+    method: "post",
+    response: () => {
+      return {
+        code: 200,
+        message: "退出登录成功",
       };
     },
   },

@@ -8,20 +8,20 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { useUserStore } from "@/store";
 import { storeToRefs } from "pinia";
-import { nextTick } from "vue";
+import { usePermissionStore } from "@/store";
 
 const router = useRouter();
 const store = useUserStore();
-const { router: userRouter } = storeToRefs(store);
+const { isLoaded } = storeToRefs(usePermissionStore());
 
 async function login(role: string) {
   await store.login(role);
-  console.log("登录成功，路由：", userRouter.value, router.getRoutes());
   router.push({
     name: "Dashboard",
   });
+  isLoaded.value = true; // 重置加载状态，确保路由重新加载
 }
 </script>

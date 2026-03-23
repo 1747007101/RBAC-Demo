@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
 import { rolePermissions } from "@/mock/permission";
-import { getUserInfoApi, getRoutesApi } from "@/api";
+import { getUserInfoApi, getRoutesApi, logoutApi } from "@/api";
 import { setupRoutes } from "@/router";
+import router from "@/router";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -24,7 +25,9 @@ export const useUserStore = defineStore("user", {
     setToken(token: string) {
       this.token = token;
     },
-
+    setRouter(router: any[]) {
+      this.router = router;
+    },
     async login(role: string) {
       console.log(1);
       const res = await getUserInfoApi({ role });
@@ -35,14 +38,26 @@ export const useUserStore = defineStore("user", {
         this.setRole(userInfo.role);
         this.setToken(token);
         this.permissions = userInfo.permissions;
-        // await this.getRoutes();
+        await this.getRoutes();
       }
+    },
+    async logoutConfirm() {
+      const res = await logoutApi();
+      if (res.code === 200) {
+        this.reset();
+      }
+    },
+    reset() {
+      this.setToken("");
+      this.setUserInfo(undefined);
+      this.setRouter([]);
+      router.replace("/login");
     },
     async getRoutes() {
       // if (this.token) {
       const res = await getRoutesApi();
       if (res.code === 200) {
-        this.router = res.data;
+        this.setRouter(res.data);
         await setupRoutes(); // 登录后设置路由
       }
       // }

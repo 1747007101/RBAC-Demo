@@ -100,6 +100,7 @@ router.beforeEach(async (to, from) => {
 
   // ❌ 未登录
   if (!hasToken) {
+    console.log("未登录");
     if (whiteList.includes(to.path)) return;
 
     return `/login?redirect=${encodeURIComponent(to.fullPath)}`;
@@ -107,10 +108,9 @@ router.beforeEach(async (to, from) => {
 
   // ✅ 已登录访问 login → 重定向
   if (to.path === "/login") {
-    const redirect = router.value?.[0]?.path;
+    const redirect = router.value?.[0].path;
     return redirect;
   }
-
   // ✅ 初始化动态路由（刷新场景）
   if (!isLoaded.value) {
     try {
@@ -120,7 +120,6 @@ router.beforeEach(async (to, from) => {
       await userStore.getRoutes();
 
       isLoaded.value = true;
-
       // ⚠️ 关键：重新匹配路由
       return { ...to, replace: true };
     } catch (err) {
