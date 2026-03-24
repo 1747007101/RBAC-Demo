@@ -41,7 +41,7 @@ export const useUserStore = defineStore("user", {
         await this.getRoutes();
       }
     },
-    async logoutConfirm() {
+    async logout() {
       const res = await logoutApi();
       if (res.code === 200) {
         this.reset();
@@ -49,8 +49,8 @@ export const useUserStore = defineStore("user", {
     },
     reset() {
       this.setToken("");
-      this.setUserInfo(undefined);
       this.setRouter([]);
+      this.setRole("guest");
       router.replace("/login");
     },
     async getRoutes() {

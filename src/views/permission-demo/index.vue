@@ -19,10 +19,5 @@
 <script setup lang="ts">
 import { hasPermission } from "@/directives/permission";
 
-const allPermissions = [
-  "dashboard:view",
-  "user:list",
-  "user:add",
-  "user:delete",
-];
+const allPermissions = ["dashboard:view", "user:role", "guest:role"];
 </script>

@@ -17,7 +17,7 @@ export function getRoutesApi() {
 }
 export function logoutApi() {
   return request({
-    url: "/api/logout",
+    url: "/logout",
     method: "post",
     noRepeat: true, //根据是否需要防止重复请求，添加自定义属性
   });
