@@ -37,7 +37,7 @@ export const useUserStore = defineStore("user", {
         this.setToken(token);
         this.permissions = userInfo.permissions;
         await this.getRoutes();
-        console.log(a);
+        console.log(bb);
       }
     },
     async logout() {
