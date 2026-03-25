@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# 兼容 Windows / Git Bash
+if [ -n "$1" ]; then
+  npx --no-install commitlint --edit "$1"
+else
+  npx --no-install commitlint --edit %1
+fi

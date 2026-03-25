@@ -23,6 +23,7 @@ export default defineConfig([
       "no-console": "warn", // ⚠️ 可选
       "@typescript-eslint/no-unused-vars": "error", // TS 版本（很关键）
       "@typescript-eslint/no-explicit-any": "warn", // ⚠️ 可选
+      "vue/multi-word-component-names": "off", // 允许单词组件名（如 PermissionDemo.vue）
     },
   },
 ]);
