@@ -20,11 +20,13 @@
     "vue-router": "^5.0.4"
   },
   "devDependencies": {
+    "@commitlint/config-conventional": "^20.5.0",
     "@eslint/js": "^10.0.1",
     "@types/mockjs": "^1.0.10",
     "@types/node": "^24.12.0",
     "@vitejs/plugin-vue": "^6.0.5",
     "@vue/tsconfig": "^0.9.0",
+    "cli": "link:/@commitlint/cli",
     "eslint": "^10.1.0",
     "eslint-plugin-vue": "^10.8.0",
     "globals": "^17.4.0",
@@ -40,7 +42,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
-      "eslint --fix",
+      "eslint --fix --max-warnings=0",
       "eslint",
       "prettier --write",
       "npm run test"
