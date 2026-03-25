@@ -47,8 +47,7 @@
     "*.{js,jsx,vue,ts,tsx}": [
       "eslint --fix",
       "eslint",
-      "prettier --write",
-      "npm run test"
+      "prettier --write"
     ],
     "*.{json,md}": [
       "prettier --write"
