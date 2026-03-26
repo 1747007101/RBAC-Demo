@@ -1,10 +1,7 @@
 import service from "./service";
-import {
-  ApiResponse,
-  InternalRequestConfig,
-  InternalResponseConfig,
-} from "./types";
+import { InternalRequestConfig, InternalResponseConfig } from "./types";
 import { addPending, removePending } from "./pending";
+import { handleLogout } from "./utils";
 
 // 请求拦截
 service.interceptors.request.use((config: InternalRequestConfig) => {
@@ -36,6 +33,7 @@ service.interceptors.response.use(
     switch (status) {
       case 401:
         console.error("未登录或登录过期");
+        handleLogout();
         break;
       case 403:
         console.error("无权限访问");

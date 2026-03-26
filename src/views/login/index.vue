@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h3>模拟登录</h3>
     <h2>选择角色</h2>
     <button @click="login('admin')">管理员</button>
     <button @click="login('user')">普通用户</button>

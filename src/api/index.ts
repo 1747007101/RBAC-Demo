@@ -8,11 +8,12 @@ export function getUserInfoApi(data: { role: string }) {
     data,
   });
 }
-export function getRoutesApi() {
+export function getRoutesApi(role: "admin" | "user" | "guest") {
   return request({
     url: "/routes",
     method: "get",
     noRepeat: true, //根据是否需要防止重复请求，添加自定义属性
+    params: { role },
   });
 }
 export function logoutApi() {

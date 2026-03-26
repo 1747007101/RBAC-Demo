@@ -43,17 +43,17 @@ export const useUserStore = defineStore("user", {
       const res = await logoutApi();
       if (res.code === 200) {
         this.reset();
+        router.replace("/login");
       }
     },
     reset() {
       this.setToken("");
       this.setRouter([]);
       this.setRole("guest");
-      router.replace("/login");
     },
     async getRoutes() {
       // if (this.token) {
-      const res = await getRoutesApi();
+      const res = await getRoutesApi(this.role);
       if (res.code === 200) {
         this.setRouter(res.data);
         await setupRoutes(); // 登录后设置路由

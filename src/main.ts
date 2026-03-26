@@ -3,8 +3,7 @@ import App from "./App.vue";
 import { setupRouter } from "./router";
 import { setupPermission } from "@/directives";
 import { setupStore } from "@/store";
-
-const app = createApp(App);
+import "./permission";
 
 // 创建实例
 const setupAll = async () => {

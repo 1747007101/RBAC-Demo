@@ -2,20 +2,64 @@ import { MockMethod } from "vite-plugin-mock";
 import Mock from "mockjs";
 
 const userList = [
-  { id: 1, username: "admin", role: "超级管理员", permissions: ["*"] },
+  { id: 1, username: "超级管理员", role: "admin", permissions: ["*"] },
   {
     id: 2,
-    username: "user",
-    role: "普通用户",
+    username: "普通用户",
+    role: "user",
     permissions: ["user:role", "dashboard:view"],
   },
   {
     id: 3,
-    username: "guest",
-    role: "游客",
+    username: "游客",
+    role: "guest",
     permissions: ["guest:role", "dashboard:view"],
   },
 ];
+const userRoutes: Record<string, any[]> = {
+  admin: [
+    {
+      path: "/dashboard",
+      name: "Dashboard",
+      component: "views/dashboard/index",
+      meta: { title: "首页" },
+    },
+    {
+      path: "/user",
+      name: "User",
+      component: "views/user/index",
+      meta: { title: "用户页" },
+    },
+    {
+      path: "/permission-demo",
+      name: "PermissionDemo",
+      component: "views/permission-demo/index",
+      meta: { title: "权限演示" },
+    },
+  ],
+  user: [
+    {
+      path: "/dashboard",
+      name: "Dashboard",
+      component: "views/dashboard/index",
+      meta: { title: "首页" },
+    },
+    {
+      path: "/user",
+      name: "User",
+      component: "views/user/index",
+      meta: { title: "用户页" },
+    },
+  ],
+  guest: [
+    {
+      path: "/dashboard",
+      name: "Dashboard",
+      component: "views/dashboard/index",
+      meta: { title: "首页" },
+    },
+  ],
+};
 
 export default [
   {
@@ -56,29 +100,11 @@ export default [
   {
     url: "/api/routes",
     method: "get",
-    response: () => {
+    response: (req: { query: { role: string } }) => {
+      const { role } = req.query;
       return {
         code: 200,
-        data: [
-          {
-            path: "/dashboard",
-            name: "Dashboard",
-            component: "views/dashboard/index",
-            meta: { title: "首页" },
-          },
-          {
-            path: "/user",
-            name: "User",
-            component: "views/user/index",
-            meta: { title: "用户管理" },
-          },
-          {
-            path: "/permission-demo",
-            name: "PermissionDemo",
-            component: "views/permission-demo/index",
-            meta: { title: "权限演示" },
-          },
-        ],
+        data: userRoutes[role] || userRoutes.guest,
       };
     },
   },

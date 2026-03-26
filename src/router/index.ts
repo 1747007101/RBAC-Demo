@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { App } from "vue";
-import { usePermissionStore, useUserStore } from "@/store";
-import { storeToRefs } from "pinia";
+import { useUserStore } from "@/store";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -20,6 +19,7 @@ const router = createRouter({
     },
   ],
 });
+
 const modules = import.meta.glob("@/views/**/*.vue");
 
 function loadView(component: string) {
@@ -58,7 +58,7 @@ export async function setupRoutes() {
   const userStore = useUserStore();
   const asyncRoutes = userStore.getRouter;
   if (asyncRoutes.length === 0) {
-    console.warn("⚠️ 过滤后无有效路由，跳过路由添加");
+    console.warn("过滤后无有效路由，跳过路由添加");
     return;
   }
   const roleRoutes = transformRoutes(asyncRoutes);
@@ -66,7 +66,7 @@ export async function setupRoutes() {
   roleRoutes.forEach((route) => {
     // 3.1 基础校验：路由名称/路径不能为空（避免无效路由）
     if (!route.name || !route.path) {
-      console.error(`❌ 路由格式错误，跳过添加：`, route);
+      console.error(`路由格式错误，跳过添加：`, route);
       return;
     }
 
@@ -79,56 +79,16 @@ export async function setupRoutes() {
       console.log(`ℹ️ 路由 ${route.name} 已存在，跳过重复添加`);
       return; // 已存在则跳过
     }
-    const routes = transformRoutes(asyncRoutes);
     // 3.3 安全添加：仅当路由不存在时才添加
     try {
       router.addRoute(route);
-      console.log(`✅ 成功添加路由：${route.name} → ${route.path}`);
+      console.log(`成功添加路由：${route.name} → ${route.path}`);
     } catch (err) {
-      console.error(`❌ 添加路由 ${route.name} 失败：`, err);
+      console.error(`添加路由 ${route.name} 失败：`, err);
     }
   });
 }
-router.beforeEach(async (to, from) => {
-  const { token, router } = storeToRefs(useUserStore());
-  const { isLoaded } = storeToRefs(usePermissionStore());
 
-  const hasToken = !!token.value;
-
-  // ✅ 白名单
-  const whiteList = ["/login"];
-
-  // ❌ 未登录
-  if (!hasToken) {
-    console.log("未登录");
-    if (whiteList.includes(to.path)) return;
-
-    return `/login?redirect=${encodeURIComponent(to.fullPath)}`;
-  }
-
-  // ✅ 已登录访问 login → 重定向
-  if (to.path === "/login") {
-    const redirect = router.value?.[0].path;
-    return redirect;
-  }
-  // ✅ 初始化动态路由（刷新场景）
-  if (!isLoaded.value) {
-    try {
-      const userStore = useUserStore();
-
-      // 👉 获取后端路由并 addRoute
-      await userStore.getRoutes();
-
-      isLoaded.value = true;
-      // ⚠️ 关键：重新匹配路由
-      return { ...to, replace: true };
-    } catch (err) {
-      console.error("动态路由加载失败", err);
-
-      return "/login";
-    }
-  }
-});
 export const setupRouter = (app: App<Element>) => {
   app.use(router);
 };
