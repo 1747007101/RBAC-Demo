@@ -4,8 +4,16 @@ import { getUserInfoApi, getRoutesApi, logoutApi } from "@/api";
 import { setupRoutes } from "@/router";
 import router from "@/router";
 
+export interface UserState {
+  role: "user" | "guest" | "admin";
+  permissions: string[];
+  router: any[];
+  tokenKey: string;
+  token: string;
+}
+
 export const useUserStore = defineStore("user", {
-  state: () => ({
+  state: (): UserState => ({
     role: "guest",
     permissions: [] as string[],
     router: [] as any[],
@@ -13,12 +21,12 @@ export const useUserStore = defineStore("user", {
     token: "",
   }),
   getters: {
-    getRouter() {
+    getRouter(): any[] {
       return this.router;
     },
   },
   actions: {
-    setRole(role: string) {
+    setRole(role: UserState["role"]) {
       this.role = role;
       this.permissions = rolePermissions[role] || [];
     },
@@ -28,7 +36,7 @@ export const useUserStore = defineStore("user", {
     setRouter(router: any[]) {
       this.router = router;
     },
-    async login(role: string) {
+    async login(role: UserState["role"]) {
       const res = await getUserInfoApi({ role });
       if (res.code === 200) {
         const { token, userInfo } = res.data;

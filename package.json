@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "prepare": "husky install",
-    "commit": "cz"
+    "commit": "cz",
+    "deploy:pro": "pnpm build && ssh root@47.109.193.165 \"rm -rf /var/www/RBAC-Demo/*\" && scp -r dist/* root@47.109.193.165:/var/www/RBAC-Demo/ && ssh root@47.109.193.165 \"/usr/local/openresty/nginx/sbin/nginx -s reload\""
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",

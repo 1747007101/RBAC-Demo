@@ -13,12 +13,13 @@ import { useRouter } from "vue-router";
 import { useUserStore } from "@/store";
 import { storeToRefs } from "pinia";
 import { usePermissionStore } from "@/store";
+import { UserState } from "@/store/modules/user";
 
 const router = useRouter();
 const store = useUserStore();
 const { isLoaded } = storeToRefs(usePermissionStore());
 
-async function login(role: string) {
+async function login(role: UserState["role"]) {
   await store.login(role);
   router.push({
     name: "Dashboard",
