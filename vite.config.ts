@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import path from "path";
 import { viteMockServe } from "vite-plugin-mock";
+import UnoCSS from "unocss/vite";
 
 export default defineConfig({
   plugins: [
@@ -9,6 +10,7 @@ export default defineConfig({
     viteMockServe({
       mockPath: "mock",
     }),
+    UnoCSS(),
   ],
   resolve: {
     alias: {
